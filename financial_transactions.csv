@@ -17,7 +17,7 @@ transaction_id,date,customer_id,amount,type,description
 16,2020-12-08,751,3415.26,credit,Main few character air.
 17,2021-06-05,658,9751.08,transfer,Listen operation enough those society open.
 18,2022-05-23,296,1676.77,transfer,Property strategy represent that.
-19,2020-01-25,681,5159.90,debit,Soldier green age much sound write chair.
+19,2020-01-25,681,,debit,Soldier green age much sound write chair.
 20,2020-02-19,33,6018.28,debit,What single suggest now stop.
 21,2020-04-09,611,2359.42,transfer,Support do interesting citizen phone energy consider.
 22,2021-03-19,988,7626.52,debit,This pass civil education.
