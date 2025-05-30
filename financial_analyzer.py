@@ -9,7 +9,7 @@ def errorlogger(err):
         e.write(err + "\n")
 def load_transactions(transactions, filename):
     """Load transactions from a CSV file into a list of dictionaries."""
-
+    transactions.clear()
     try:
         with open(filename, 'r') as csvfile:
             dict_reader = DictReader(csvfile)
@@ -18,7 +18,7 @@ def load_transactions(transactions, filename):
 
                 try:
                     transaction_id = int(row['transaction_id'])
-                    date = datetime.strptime(row['date'], '%Y-%m-%d')
+                    date = datetime.strptime(row['date'], '%Y-%m-%d').date()
                     customer_id = int(row['customer_id'])
                     amount = float(row['amount'])
                     transaction_type = row['transaction_type'].strip().lower()
@@ -63,7 +63,7 @@ def create_transaction(transactions):
         print("Highest transaction_id:", transaction_id)
 
         date = input("Enter date of new transaction in YYYY-MM-DD format")
-        date = datetime.strptime(date, "%Y-%m-%d")
+        date = datetime.strptime(date, "%Y-%m-%d").date()
         
         customer_id = int(input("Enter customer ID"))
         
@@ -164,7 +164,27 @@ def save_transactions(transactions, filename):
 
     print("Transactions saved.")
 def generate_report(transactions):
-    print("Hi")
+    try:
+        with open("report.txt", "w") as file:
+            total = {}
+
+            for transaction in transactions:
+                transaction_type = transaction["transaction_type"]
+                amount = transaction["amount"]
+
+                if transaction_type in total:
+                    total[transaction_type] += amount
+                else:
+                    total[transaction_type] = amount
+
+            for t in total:
+                file.write(f"Total {t}: ${total[t]:.2f}\n")
+                
+            net = sum(t["amount"] for t in transactions)
+            file.write(f"Net balance: ${net:.2f}\n")
+
+    except ValueError as err:
+        print(f"value error: {err}")
 def main():
     print("1. Load Transactions\n2. Add Transaction\n3. View Transactions\n4. Update transaction\n5. Delete Transaction\n6. Analyze Finances\n7. Save Transactions\n8. Generate Report\n9. Exit")
     transactions = []
