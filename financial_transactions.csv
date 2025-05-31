@@ -9,3 +9,4 @@ transaction_id,date,customer_id,amount,type,description
 8,2022-09-08,573,8088.01,credit,Trouble reason speak involve.
 9,2022-01-30,950,949.0,credit,Popular three war arm best.
 10,2020-08-20,728,1008.62,credit,Old see watch no.
+11,2000-02-20,2,22222.0,transfer,222

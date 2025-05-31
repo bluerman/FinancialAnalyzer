@@ -26,7 +26,7 @@ def load_transactions(transactions, filename):
                     description = row['description'].strip()
 
                     if(type == 'debit'):
-                        amount = abs(amount)
+                        amount = -amount
 
                     transaction = {'transaction_id': transaction_id, 'date': date, 'customer_id': customer_id, 'amount': amount, 'type': type, 'description': description}
 
@@ -90,8 +90,6 @@ def update_transaction(transactions):
         view_transactions(transactions)
         transaction_id = int(input("Enter the transaction ID you wish to change: "))
         field = input("Change which field? (amount, type, or description): ").strip().lower()
-        if field == "type":
-            field = "type"
         
         for transaction in transactions:
             if transaction['transaction_id'] == transaction_id:
@@ -147,6 +145,13 @@ def analyze_finances(transactions):
             print(f"Total {t}: ${total[t]:.2f}")
             
         net = sum(t["amount"] for t in transactions)
+
+        try:
+            net -= total["transfer"]
+        except:
+            pass
+
+
         print(f"Net balance: ${net:.2f}")
 
     except ValueError as err:
@@ -157,6 +162,12 @@ def save_transactions(transactions, filename):
             fieldnames = ['transaction_id', 'date', 'customer_id', 'amount', 'type', 'description']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader() 
+
+            for transaction in transactions:
+                print(transaction["type"])
+                print(transaction["amount"])
+                if transaction['type'] == "debit":
+                    transaction['amount'] = abs(transaction['amount'])
             writer.writerows(transactions)
     except ValueError as err:
         print("Failed to save transaction")
@@ -180,6 +191,11 @@ def generate_report(transactions):
                 file.write(f"Total {t}: ${total[t]:.2f}\n")
                 
             net = sum(t["amount"] for t in transactions)
+
+            try:
+                net -= total["transfer"]
+            except:
+                pass
             file.write(f"Net balance: ${net:.2f}\n")
 
     except ValueError as err:
