@@ -11,6 +11,7 @@ def load_transactions(transactions, filename):
     """Load transactions from a CSV file into a list of dictionaries."""
     transactions.clear()
     try:
+
         with open(filename, 'r') as csvfile:
             dict_reader = DictReader(csvfile)
 
@@ -21,13 +22,13 @@ def load_transactions(transactions, filename):
                     date = datetime.strptime(row['date'], '%Y-%m-%d').date()
                     customer_id = int(row['customer_id'])
                     amount = float(row['amount'])
-                    transaction_type = row['transaction_type'].strip().lower()
+                    type = row['type'].strip().lower()
                     description = row['description'].strip()
 
-                    if(transaction_type == 'debit'):
-                        amount = -amount
+                    if(type == 'debit'):
+                        amount = abs(amount)
 
-                    transaction = {'transaction_id': transaction_id, 'date': date, 'customer_id': customer_id, 'amount': amount, 'transaction_type': transaction_type, 'description': description}
+                    transaction = {'transaction_id': transaction_id, 'date': date, 'customer_id': customer_id, 'amount': amount, 'type': type, 'description': description}
 
                     transactions.append(transaction)
 
@@ -54,32 +55,30 @@ def view_transactions(transactions):
             transaction['date'].strftime('%Y-%m-%d'),
             transaction['customer_id'],
             transaction['amount'],
-            transaction['transaction_type'],
+            transaction['type'],
             transaction['description']
         ))
 def create_transaction(transactions):
     try:
         transaction_id = max(transaction["transaction_id"] for transaction in transactions)+1
-        print("Highest transaction_id:", transaction_id)
-
-        date = input("Enter date of new transaction in YYYY-MM-DD format")
+        date = input("Enter date of new transaction in YYYY-MM-DD format: ")
         date = datetime.strptime(date, "%Y-%m-%d").date()
         
-        customer_id = int(input("Enter customer ID"))
+        customer_id = int(input("Enter customer ID: "))
         
-        transaction_type = input("Enter type").lower()
-        if transaction_type not in ['credit', 'debit', 'transfer']:
+        type = input("Enter type (credit, debit, or transfer): ").lower()
+        if type not in ['credit', 'debit', 'transfer']:
             print("Invalid transaction type")
             return
 
-        amount = float(input("Enter the amount"))
+        amount = float(input("Enter the amount: "))
 
-        if transaction_type == "debit":
-            amount = -amount
+        if type == "debit":
+            amount = abs(amount)
 
-        description = input("Enter description")
+        description = input("Enter description: ")
 
-        transaction = {'transaction_id': transaction_id, 'date': date, 'customer_id': customer_id, 'amount': amount, 'transaction_type': transaction_type, 'description': description}
+        transaction = {'transaction_id': transaction_id, 'date': date, 'customer_id': customer_id, 'amount': amount, 'type': type, 'description': description}
 
         transactions.append(transaction)
         print("Success!")
@@ -89,10 +88,10 @@ def create_transaction(transactions):
 def update_transaction(transactions):
     try:
         view_transactions(transactions)
-        transaction_id = int(input("Enter the transaction ID you wish to change"))
-        field = input("Change which field? (amount, type, or description)").strip().lower()
+        transaction_id = int(input("Enter the transaction ID you wish to change: "))
+        field = input("Change which field? (amount, type, or description): ").strip().lower()
         if field == "type":
-            field = "transaction_type"
+            field = "type"
         
         for transaction in transactions:
             if transaction['transaction_id'] == transaction_id:
@@ -136,13 +135,13 @@ def analyze_finances(transactions):
         print("Financial Summary:")
 
         for transaction in transactions:
-            transaction_type = transaction["transaction_type"]
+            type = transaction["type"]
             amount = transaction["amount"]
 
-            if transaction_type in total:
-                total[transaction_type] += amount
+            if type in total:
+                total[type] += amount
             else:
-                total[transaction_type] = amount
+                total[type] = amount
 
         for t in total:
             print(f"Total {t}: ${total[t]:.2f}")
@@ -155,7 +154,7 @@ def analyze_finances(transactions):
 def save_transactions(transactions, filename):
     try:
         with open(filename, "w", newline="") as file:
-            fieldnames = ['transaction_id', 'date', 'customer_id', 'amount', 'transaction_type', 'description']
+            fieldnames = ['transaction_id', 'date', 'customer_id', 'amount', 'type', 'description']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader() 
             writer.writerows(transactions)
@@ -169,13 +168,13 @@ def generate_report(transactions):
             total = {}
 
             for transaction in transactions:
-                transaction_type = transaction["transaction_type"]
+                type = transaction["type"]
                 amount = transaction["amount"]
 
-                if transaction_type in total:
-                    total[transaction_type] += amount
+                if type in total:
+                    total[type] += amount
                 else:
-                    total[transaction_type] = amount
+                    total[type] = amount
 
             for t in total:
                 file.write(f"Total {t}: ${total[t]:.2f}\n")
@@ -186,12 +185,12 @@ def generate_report(transactions):
     except ValueError as err:
         print(f"value error: {err}")
 def main():
-    print("1. Load Transactions\n2. Add Transaction\n3. View Transactions\n4. Update transaction\n5. Delete Transaction\n6. Analyze Finances\n7. Save Transactions\n8. Generate Report\n9. Exit")
     transactions = []
 
     choice = 1
     while(choice != "9"):
-        choice = input("Select an option").strip()
+        print("1. Load Transactions\n2. Add Transaction\n3. View Transactions\n4. Update transaction\n5. Delete Transaction\n6. Analyze Finances\n7. Save Transactions\n8. Generate Report\n9. Exit")
+        choice = input("Select an option: ").strip()
         filename = 'financial_transactions.csv'
 
         if(choice == "9"):

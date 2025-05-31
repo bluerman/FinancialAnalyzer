@@ -1,12 +1,11 @@
-transaction_id,date,customer_id,amount,transaction_type,description
+transaction_id,date,customer_id,amount,type,description
 1,2020-10-26,926,6478.39,credit,Expect series shake art again our.
 2,2020-01-08,466,1255.95,credit,Each left similar likely coach take.
-3,2019-09-02,110,-7969.68,debit,Direction wife job pull determine leader move college.
+3,2019-09-02,110,7969.68,debit,Direction wife job pull determine leader move college.
 4,2020-12-02,142,2927.41,credit,Agree reveal buy black already.
-5,2020-12-02,944,-4661.88,debit,Child relationship show college whom speech.
+5,2020-12-02,944,4661.88,debit,Child relationship show college whom speech.
 6,2021-04-25,900,3649.68,credit,Century front item.
 7,2020-06-19,458,504.24,credit,Market cover loss hotel send.
 8,2022-09-08,573,8088.01,credit,Trouble reason speak involve.
 9,2022-01-30,950,949.0,credit,Popular three war arm best.
 10,2020-08-20,728,1008.62,credit,Old see watch no.
-11,2000-02-02,2,-22.0,debit,222
