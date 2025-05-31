@@ -1,4 +1,4 @@
-Total credit: $24861.30
-Total debit: $-12631.56
-Total transfer: $22222.00
-Net balance: $12229.74
+Total credit: $166667176.25
+Total debit: $-166202857.01
+Total transfer: $168012221.73
+Net balance: $464319.24

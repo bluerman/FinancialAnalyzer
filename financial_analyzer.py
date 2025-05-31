@@ -164,8 +164,6 @@ def save_transactions(transactions, filename):
             writer.writeheader() 
 
             for transaction in transactions:
-                print(transaction["type"])
-                print(transaction["amount"])
                 if transaction['type'] == "debit":
                     transaction['amount'] = abs(transaction['amount'])
             writer.writerows(transactions)
